@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/">
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,300i,700"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+
+    <title>Natours | Exciting tours for adventurous people</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav nav--tours">
+        <a href="/" class="nav__el">All tours</a>
+        <form class="nav__search">
+          <button class="nav__search-btn">
+            <svg>
+              <use xlink:href="img/icons.svg#icon-search"></use>
+            </svg>
+          </button>
+          <input
+            type="text"
+            placeholder="Search tours"
+            class="nav__search-input"
+          />
+        </form>
+      </nav>
+      <div class="header__logo">
+        <img src="img/logo-white.png" alt="Natours logo" />
+      </div>
+      <nav class="nav nav--user">
+        <% if(currentUser){ %>
+        <a href="/api/v1/users/logout" class="nav__el">logout</a>
+        <a href="/me" class="nav__el">
+          <img src="img/users/user.jpg" alt="" class="nav__user-img" />
+          <span><%=currentUser.name%></span>
+        </a>
+        <%}else{%>
+        <a class="nav__el" href="/login">Log in</a>
+        <a class="nav__el nav__el--cta" href="/signup">Sign up</a>
+        <%}%>
+      </nav>
+    </header>
+   
+    
+    <section class="overview">
+      <div class="card-container">
+        <% tours.forEach(tour=>{%>
+        <div class="card">
+          <div class="card__header">
+            <div class="card__picture">
+              <div class="card__picture-overlay">&nbsp;</div>
+              <img
+                src="img/tours/<%= tour.imageCover %>"
+                alt=""
+                class="card__picture-img"
+              />
+            </div>
+
+            <h3 class="heading-tertirary">
+              <span><%= tour.name %></span>
+            </h3>
+          </div>
+
+          <div class="card__details">
+            <h4 class="card__sub-heading"><%=tour.difficulty %> <%=tour.duration %> -day tour</h4>
+            <p class="card__text">
+              <%=tour.summary%>
+            </p>
+            <div class="card__data">
+              <svg class="card__icon">
+                <use xlink:href="img/icons.svg#icon-map-pin"></use>
+              </svg>
+              <span><%= tour.startLoaction %> </span>
+            </div>
+            <div class="card__data">
+              <svg class="card__icon">
+                <use xlink:href="img/icons.svg#icon-calendar"></use>
+              </svg>
+              <span><%=tour.startDates[1].toDateString()%></span>
+            </div>
+            <div class="card__data">
+              <svg class="card__icon">
+                <use xlink:href="img/icons.svg#icon-flag"></use>
+              </svg>
+              <span><%= tour.location %> <%= tour.length%> stops</span>
+            </div>
+            <div class="card__data">
+              <svg class="card__icon">
+                <use xlink:href="img/icons.svg#icon-user"></use>
+              </svg>
+              <span><%=tour.maxGroupSize%> people</span>
+            </div>
+          </div>
+
+          <div class="card__footer">
+            <p>
+              <span class="card__footer-value">$<%=tour.price%></span>
+              <span class="card__footer-text">per person</span>
+            </p>
+            <p class="card__ratings">
+              <span class="card__footer-value"><%=tour.ratingsAverage%></span>
+              <span class="card__footer-text">rating(<%=tour.ratingsQuantity%>)</span>
+            </p>
+            <a href="tour/<%=tour.slug%>" class="btn btn--green btn--small">Details</a>
+          </div>
+        </div>
+<%})%>
+        
+    </section>
+   
+
+   
+    <%- include('footer.ejs') %>
+    
+  </body>
+</html>
